@@ -110,7 +110,7 @@ By now you should have created your database and run `seed.py`; if you haven't
 yet, do that now!
 
 Once you have a populated database, navigate to the `server/` directory and
-enter `flask shell` to start manipulating our models. Import all of your models
+run `flask shell` to start manipulating our models. Import all of your models
 and retrieve a `Zookeeper` record. Let's run its brand new method, `to_dict()`:
 
 ```console
