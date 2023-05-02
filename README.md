@@ -64,6 +64,101 @@ your database, then `python seed.py` to seed it with data. Our serializer will
 affect the visualization of our data, but it will not impact the database; we
 won't need to touch Flask-Migrate again in this lesson.
 
+### `SerializerMixin`
+
+Navigate to `models.py` and you'll notice a new import at the top:
+
+```py
+# models.py
+from sqlalchemy_serializer import SerializerMixin
+```
+
+The SerializerMixin class in SQLAlchemy-Serializer is a helpful feature that
+allows developers to quickly add serialization capabilities to their SQLAlchemy
+models. When a model class inherits from the SerializerMixin, it gains a range
+of methods for serializing and deserializing data. These methods include
+`to_dict()`, which converts the model object into a dictionary, and `to_json()`,
+which converts it into a JSON string.
+
+In short, the SerializerMixin simplifies the process of data serialization by
+adding a set of predefined methods to SQLAlchemy models. Developers can
+customize these methods as needed to achieve their desired serialization format,
+and can use them to quickly transform complex database models into simpler, more
+usable data structures. Most languages can't work with Python objects, after
+all.
+
+### Configuring our Models for Serialization
+
+In `models.py`, we'll need to reconfigure each of our models to inherit from
+`SerializerMixin`. Don't worry though- this only requires a small amount of new
+code, and we won't have to run new migrations afterward.
+
+```py
+# models.py
+# imports, config
+
+class Zookeeper(db.Model, SerializerMixin):
+    ...
+
+class Enclosure(db.Model, SerializerMixin):
+    ...
+
+class Animal(db.Model, SerializerMixin):
+    ...
+```
+
+By now you should have created your database and run `seed.py`; if you haven't
+yet, do that now!
+
+Once you have a populated database, navigate to the `server/` directory and
+enter `flask shell` to start manipulating our models. Import all of your models
+and retrieve a `Zookeeper` record. Let's run its brand new method, `to_dict()`:
+
+```console
+$ from models import *
+$ z1 = Zookeeper.query.first()
+$ z1.to_dict()
+# => RecursionError: maximum recursion depth exceeded in comparison
+```
+
+While this isn't _quite_ what we were looking for, it introduces us to an
+important concept in serialization: _recursion depth_.
+
+#### Recursion Depth
+
+Sometimes, the process of serialization can get very complex, especially if the
+data we're working with has many layers of nested structures or relationships.
+
+Recursion depth refers to how deeply nested the data structures are when we
+serialize them. If the structures are very deeply nested, the serialization
+process can require a lot of memory and computational resources, which can slow
+down the program or even cause it to crash.
+
+For example, imagine you have a data structure representing a family tree, with
+each person having parents, grandparents, and so on. If we try to serialize this
+structure and we don't set a limit on the recursion depth, the program might
+keep going deeper and deeper into the family tree, creating more and more data
+to process, until it runs out of memory or crashes.
+
+To avoid this problem, we can set a limit on the recursion depth, so that the
+program only goes a certain number of layers deep before stopping. This helps us
+manage the memory and computational resources needed for the serialization
+process and ensures that the program runs smoothly.
+
+### `serialize_rules`
+
+To avoid any errors involving recursion depth, we can set the `serialize_rules`
+class attribute in each of our models. This is a tuple (so remember to include
+trailing commas!) where we can specify which fields to exclude. To avoid diving
+too many layers into each record's relationships, we will tell
+SQLAlchemy-Serializer to not look back at the original record from within its
+related records. Here's what that will look like:
+
+```py
+# models.py
+
+```
+
 ***
 
 ## Instructions
@@ -75,29 +170,7 @@ messages to complete your work in the `server/` folder.
 
 Instructions begin here:
 
-- Design a Flask application that displays information from a database created
-  using Flask-SQLAlchemy and Flask-Migrate.
-- `flask db init` has already been run. You will need to direct your Flask app
-  to a database at `app.db`, create models, run a migration with `flask db
-  revision --autogenerate -m'<your message>'` and create the database file with
-  `flask db upgrade`.
-- Your database should represent a zoo. There should be three tables: `animals`,
-  `zookeepers`, and `enclosures`.
-- The `Animal` model should contain a `name`, a `species`, a `zookeeper`, and
-  an `enclosure`.
-- The `Zookeeper` model should contain a `name`, a `birthday`, and a list of
-  `animals` that they take care of.
-- The `Enclosure` model should contain an `environment` (grass, sand, or water),
-  an `open_to_visitors` boolean, and a list of `animals`.
-- Your application should contain three views: `animal_by_id`,
-  `zookeeper_by_id`, and `enclosure_by_id`. Their routes should be
-  `animal/<int:id>`, `zookeeper/<int:id>`, and `enclosure/<int:id>`,
-  respectively.
-- Each view should display all attributes as line items (`ul`). If there is a
-  one-to-many relationship, each of the many should have its own line item.
-- A seed script, `server/seed.py`, has been provided to generate test data once your
-  models have been built and migrated to a database. Make sure to run this so
-  that there are resources for the test suite to visit.
+- AAA
 
 Once all of your tests are passing, commit and push your work using `git` to
 submit.
