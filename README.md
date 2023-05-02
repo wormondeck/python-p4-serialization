@@ -224,7 +224,7 @@ are passing, submit your work through CodeGrade.
 ## Conclusion
 
 SQLAlchemy-Serializer is a helpful tool that helps programmers turn complex
-database information into simpler, easy-to-use formats. It makes it easier to
+database information into simpler, portable formats. It makes it easier to
 share this data with other programs or systems. For instance, if you have a list
 of friends on Facebook, SQLAlchemy-Serializer can help you turn that data into a
 format that another website or app can understand.
@@ -234,7 +234,8 @@ problems. To prevent this, programmers need to set limits on how deep the data
 can go. For example, imagine a list of animals with each animal having
 offspring, and each of those offspring having their own offspring. The list
 could go on forever! SQLAlchemy-Serializer helps programmers manage this
-issue by providing tools to handle these kinds of situations.
+issue by providing tools such as `serialize_rules` and the `rules` and `only`
+arguments to the `to_dict()` method to handle these kinds of situations.
 
 By using SQLAlchemy-Serializer, programmers can create faster and more efficient
 programs that can easily share data with others.
