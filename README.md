@@ -214,38 +214,9 @@ $ z1.to_dict(only=('name',))
 
 ## Instructions
 
-This is a **test-driven lab**. Run `pipenv install` to create your virtual
-environment and `pipenv shell` to enter the virtual environment. Then run
-`pytest -x` to run your tests. Use these instructions and `pytest`'s error
-messages to complete your work in the `server/` folder.
-
-Instructions begin here:
-
-- AAA
-
-Once all of your tests are passing, commit and push your work using `git` to
-submit.
-
-### Examples
-
-#### Animal View
-
-![animal ID 1, name Logan, species Snake, zookeeper Dylan Taylor,
-enclosure trees](
-https://curriculum-content.s3.amazonaws.com/python/flask-sqlalchemy-lab-1.png
-)
-
-#### Zookeeper View
-
-![zookeeper name Stephanie Contreras, birthday 1996-9-20, 6 animals](
-https://curriculum-content.s3.amazonaws.com/python/flask-sqlalchemy-lab-2.png
-)
-
-#### Enclosure View
-
-![enclosure with pond environment, not open to visitors, 8 animals](
-https://curriculum-content.s3.amazonaws.com/python/flask-sqlalchemy-lab-3.png
-)
+After configuring serialization on each of your models, run `pytest` to ensure
+that each is serializable to a dictionary without any errors. When all tests
+are passing, submit your work through CodeGrade.
 
 ***
 
