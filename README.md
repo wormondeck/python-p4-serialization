@@ -128,8 +128,9 @@ important concept in serialization: _recursion depth_.
 Sometimes, the process of serialization can get very complex, especially if the
 data we're working with has many layers of nested structures or relationships.
 
-Recursion depth refers to how deeply nested the data structures are when we
-serialize them. If the structures are very deeply nested, the serialization
+Recursion depth refers to how deeply we traverse the nested relationships within
+data structures when we
+serialize them. If the structures are very deeply nested, a complete serialization
 process can require a lot of memory and computational resources, which can slow
 down the program or even cause it to crash.
 
