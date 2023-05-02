@@ -156,7 +156,59 @@ related records. Here's what that will look like:
 
 ```py
 # models.py
+# imports, config
 
+class Zookeeper(db.Model, SerializerMixin):
+    __tablename__ = 'zookeepers'
+
+    # don't forget that every tuple needs at least one comma!
+    serialize_rules = ('-animals.zookeeper',)
+
+class Enclosure(db.Model, SerializerMixin):
+    __tablename__ = 'enclosures'
+
+    serialize_rules = ('-animals.enclosure',)
+
+class Animal(db.Model, SerializerMixin):
+    __tablename__ = 'animals'
+
+    serialize_rules = ('-zookeeper.animals', '-enclosure.animals',)
+```
+
+Save your changes and navigate back to the Flask shell. Let's try converting our
+record to a dictionary again:
+
+```console
+$ z1 = Zookeeper.query.first()
+$ z1.to_dict()
+# => {'birthday': '1961-08-19', 'id': 1, 'name': 'Christina Hill', 'animals': [{'name': 'Heather', 'enclosure_id': 16, 'enclosure': {'id': 16, 'environment': 'Ocean', 'open_to_visitors': False}, 'zookeeper_id': 1, 'species': 'Tiger', 'id': 13}, ...]}
+```
+
+Just like that, we have a dictionary representation of a Python SQLAlchemy
+object. This will be much easier for other applications to use!
+
+### `to_dict()`
+
+`to_dict()` is a simple method: it takes a SQLAlchemy object, turns its columns
+into dictionary keys, and turns its column values into dictionary values. That
+being said, it can do a bit more if we ever need to modify its output.
+
+`to_dict()` has two arguments that can be passed in:
+
+- `rules` works the same as `serialize_rules` within the model. You can specify
+  additional columns to exclude here.
+- `only` allows you to specify an exhaustive list of columns to display. This
+  can be helpful if you're working with a table with many columns or you only
+  want to display one or two of a table's columns.
+
+Let's head back to the Flask shell and give these a shot:
+
+```console
+$ z1 = Zookeeper.query.first()
+$ z1.to_dict(rules=('-animals',))
+# => {'name': 'Christina Hill', 'id': 1, 'birthday': '1961-08-19'}
+$ z1.to_dict(only=('name',))
+# => {'name': 'Christina Hill'}
 ```
 
 ***
@@ -198,10 +250,30 @@ https://curriculum-content.s3.amazonaws.com/python/flask-sqlalchemy-lab-3.png
 
 ***
 
+## Conclusion
+
+SQLAlchemy-Serializer is a helpful tool that helps programmers turn complex
+database information into simpler, easy-to-use formats. It makes it easier to
+share this data with other programs or systems. For instance, if you have a list
+of friends on Facebook, SQLAlchemy-Serializer can help you turn that data into a
+format that another website or app can understand.
+
+However, when we serialize data, it can sometimes become too complex and cause
+problems. To prevent this, programmers need to set limits on how deep the data
+can go. For example, imagine a list of animals with each animal having
+offspring, and each of those offspring having their own offspring. The list
+could go on forever! SQLAlchemy-Serializer helps programmers manage this
+issue by providing tools to handle these kinds of situations.
+
+By using SQLAlchemy-Serializer, programmers can create faster and more efficient
+programs that can easily share data with others.
+
+***
+
 ## Resources
 
 - [Quickstart - Flask-SQLAlchemy][flask_sqla]
 - [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/)
-- [Flask Extensions, Plug-ins, and Related Libraries - Full Stack Python](https://www.fullstackpython.com/flask-extensions-plug-ins-related-libraries.html)
+- [SQLAlchemy-Serializer](https://pypi.org/project/SQLAlchemy-serializer/)
 
 [flask_sqla]: https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/#
