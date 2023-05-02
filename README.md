@@ -1,10 +1,9 @@
-# Flask-SQLAlchemy Lab
+# Serialization
 
 ## Learning Goals
 
-- Build and run a Flask application on your computer.
-- Extend a Flask application to meet the unique requirements of different
-  projects.
+- Use SQLAlchemy-Serializer to convert SQLAlchemy objects into
+  dictionaries.
 
 ***
 
